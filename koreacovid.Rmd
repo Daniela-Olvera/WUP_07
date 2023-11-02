@@ -84,4 +84,3 @@ The p value is 0.0012.The p value is smaller than 0.05.Therefore we would reject
 ## Conclusions
 Our original question was is dying independent on sex.The p value is 0.0012.The p value is smaller than 0.05.Therefore we would reject the null hypothesis, which was that there is no difference in dying based on gender.We can conclude that there is a difference in dying based on gender.On the fisher test we can see, You are 2x more likely to died of covid in korea if you are male.
 
-
