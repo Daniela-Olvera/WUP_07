@@ -19,37 +19,68 @@ mutate(across(where(is.character), as.factor))
 
 ```
 ### Data is from the Patient_Info dataset from South Korea 1 Jan to 1 May 2020
-### This data was retrieved from a downloadable zip file from kaggle
+### These data were retrieved from a downloadable zip file from kaggle
 
 Some of the data was uncoded for sex - sex must be just male or female
 77 of the data entries were coded sex  as blank, so we omit these.
 state of a patient must be died or alive - we adjust that as well   
   
+```{r}
+str(kRdata)
+```
+  
+
+  
 # Your Question - Is dying independent of sex?
 
+$H_0$:There is no difference in dying based on gender.
+$H_A$:There is a difference in dying based on gender.
+
+## Methods
+The response and explanatory variable would be categorical.We would use the Cat_Cat helper file.
 
 
+## Graphical results - use ggplot commands to do this 
+
+```{r}
+dd2 <- kRdata %>% group_by(result,Sex) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
 
+# the group_by followed by summarize(count=n())
 
-## Graphical results - use ggplot commands to do this  
+basicC <- ggplot(dd2,aes(x=Sex,y=count,fill=result))
+basicC + geom_bar(stat="identity",position="dodge")
 
+#Now for percentage plot
 
+basicCC <- ggplot(dd2,aes(x=Sex,y=prcnt*100,fill=result))
+basicCC + geom_bar(stat="identity", position = "dodge")
 
-  
+```
 
+Based on the graph, we can see more men have died as a result of covid than women.Around 36 women died from covid compared to the 64 men who died as a result of covid.
 
-
-
-
-  
 ## Numerical results
 
+```{r}
+table1 <- xtabs(~result + Sex, data=kRdata)
+rowPerc(table1)
+colPerc(table1)
+```
+
+This table shows that more men than women died as result of covid than women.36 females died compared to the 64 men who died.56 females survived compared to 44 men surviving.
 
 ## Inferential results 
 
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
 
-
+The p value is 0.0012.The p value is smaller than 0.05.Therefore we would reject the null hypothesis that there is no difference in dying based on gender.On the fisher test we can see, You are 2x more likely to died of covid in korea if you are male.
 
 ## Conclusions
+Our original question was is dying independent on sex.The p value is 0.0012.The p value is smaller than 0.05.Therefore we would reject the null hypothesis, which was that there is no difference in dying based on gender.On the fisher test we can see, You are 2x more likely to died of covid in korea if you are male.
+
 
